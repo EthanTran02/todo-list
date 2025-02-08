@@ -27,5 +27,6 @@ module.exports = {
     port: 9000, // Local dev server port
     open: true, // Opens browser automatically
     hot: true, // Enables Hot Module Replacement (HMR)
+    liveReload: true, // Enable live reloading
   },
 };
