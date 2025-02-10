@@ -12,14 +12,18 @@
         <h3>Projects</h3>
 
         <input type="text" id="add-project-field" placeholder="Project name">
-        <button id="add-project-button">Add projects</button>
+        <button id="add-project-button">Add</button>
         
         <!-- Projects display section -->
         <div id="projects">
         </div>
     </div>
     <div id="main">
-        <h2>Tasks:</h2>
+    
+        <!-- Task display section -->
+        <div id="tasks"></div>
+        
+        <h2>Adding Tasks:</h2>
         <div>
             <input type="text" id="taskTitle" placeholder="Task Title">
             <input type='text' id="taskDescription" placeholder="Task Description"></input>
@@ -31,9 +35,7 @@
             </select>
             <button id="addTaskBtn">Add Task</button>
         </div>
-    
-        <!-- Task display section -->
-        <div id="tasks"></div>
+
     </div>
 
     <script src="dist/bundle.js"></script>

@@ -1,6 +1,6 @@
 import task from "./task"
 
-export default class project {
+export default class Project {
     constructor(name) {
         this.name = name
         this.tasks = []
