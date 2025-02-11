@@ -16,22 +16,11 @@ function renderProjects() {
     projectsArray.forEach(proj => {
         // project div
         const projectDiv = document.createElement('div'); // Changed variable name to avoid shadowing
-        projectDiv.style.display = 'flex';
-        projectDiv.style.alignItems = 'center';
-        projectDiv.style.justifyContent = 'space-between';
-        projectDiv.style.width = '150px';
-        projectDiv.style.marginBottom = '12px';
-        projectDiv.style.cursor = 'pointer';
 
         // project element
-        const projectName = document.createElement('h3');
+        const projectName = document.createElement('p');
 
         const removeButton = document.createElement('button');
-        removeButton.style.border = 'none';
-        removeButton.style.backgroundColor = 'white';
-        removeButton.style.cursor = 'pointer';
-        removeButton.style.fontSize = '24px';
-
         // project content
         projectName.innerText = proj.name;
         removeButton.innerText = 'x';
@@ -43,7 +32,9 @@ function renderProjects() {
         projects.appendChild(projectDiv);
 
         // event for remove button
-        removeButton.addEventListener('click', () => {
+        removeButton.addEventListener('click', (e) => {
+            e.stopImmediatePropagation()
+
             const index = projectsArray.indexOf(proj);
             if (index > -1) {
                 projectsArray.splice(index, 1);
@@ -55,6 +46,12 @@ function renderProjects() {
             }
            
             renderProjects();
+
+            if (projectsArray.length > 0) {
+                currentProject = projectsArray[0]; // Select the first project
+                renderTasks();
+                renderForm();
+            }
         });
 
         // Add an event, when clicking on project, displaying project's tasks && display the input field for adding new task
@@ -77,29 +74,37 @@ function renderTasks() {
     // project name
     const projectName = document.createElement('h2');
     projectName.innerText = currentProject.name;
-    projectName.style.marginBottom = '30px';
-    projectName.style.marginTop = '30px';
 
     tasks.appendChild(projectName);
 
-    currentProject.tasks.forEach(task => {
+    currentProject.tasks.forEach((task, index) => {
         //create element for task
         const taskDiv = document.createElement('div');
+        const taskLeft = document.createElement('div')
         const title = document.createElement('h3');
         const date = document.createElement('p');
+        const removeTask = document.createElement('button')
 
         title.innerText = task.title;
         date.innerText = task.dueDate;
+        removeTask.innerText = 'x'
+
+        //add event for task's remove button 
+        removeTask.addEventListener('click', e => {
+            e.stopPropagation
+
+            currentProject.removeTask(index)
+            renderTasks
+        })
 
         //append child
-        taskDiv.appendChild(title);
-        taskDiv.appendChild(date);
+        taskLeft.appendChild(title);
+        taskLeft.appendChild(date);
+        taskDiv.appendChild(taskLeft)
+        taskDiv.appendChild(removeTask)
 
         tasks.appendChild(taskDiv);
 
-        taskDiv.style.paddingTop = '20px';
-        taskDiv.style.paddingBottom = '20px';
-        taskDiv.style.borderBottom = '1px solid black';
     });
 }
 
@@ -143,6 +148,9 @@ function renderForm() {
                 }
             })
 }
+
+
+
 // event for Add project button
 const addProjectButton = document.getElementById('add-project-button');
 const addProjectField = document.getElementById('add-project-field');
@@ -156,10 +164,13 @@ addProjectButton.addEventListener('click', () => {
     const newProject = new project(projectName);
 
     projectsArray.push(newProject);
+    currentProject = newProject
 
     addProjectField.value = '';
 
     renderProjects();
+    renderTasks();
+    renderForm();
 });
 
 

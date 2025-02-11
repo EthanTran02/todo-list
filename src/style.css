@@ -1,82 +1,130 @@
 /* 1. Use a more-intuitive box-sizing model */
 *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  
-  /* 2. Remove default margin */
-  * {
-    margin: 0;
-  }
-  
-  body {
-    /* 3. Add accessible line-height */
-    line-height: 1.5;
-    /* 4. Improve text rendering */
-    -webkit-font-smoothing: antialiased;
-  }
-  
-  /* 5. Improve media defaults */
-  img, picture, video, canvas, svg {
-    display: block;
-    max-width: 100%;
-  }
-  
-  /* 6. Inherit fonts for form controls */
-  input, button, textarea, select {
-    font: inherit;
-  }
-  
-  /* 7. Avoid text overflows */
-  p, h1, h2, h3, h4, h5, h6 {
-    overflow-wrap: break-word;
-  }
-  
-  /* 8. Improve line wrapping */
-  p {
-    text-wrap: pretty;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    text-wrap: balance;
-  }
-  
-  /*
-    9. Create a root stacking context
-  */
-  #root, #__next {
-    isolation: isolate;
-  }
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+
+body {
+  /* 3. Add accessible line-height */
+  line-height: 1.5;
+  /* 4. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 5. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 6. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 7. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 8. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/*
+  9. Create a root stacking context
+*/
+#root, #__next {
+  isolation: isolate;
+}
 
 
 /* -------------------------------------------- */
 
 
 body {
-    display: flex;
-    padding-top: 60px;
+  display: flex;
 }
 
-/* side bar */
+/* ------------ side bar ------------*/
 
 #side-bar {
-    flex: 1;
-    height: 100vh;
-    border: 1px solid black;
-    border-top: none;
+  flex: 1;
+  height: 100vh;
+  border-top: none;
+  background-color: #ededed;
 
-    padding-left: 30px;
+  padding-left: 30px;
+  padding-top: 60px;
+
 }
+
+#side-bar h1 {
+  margin-bottom: 40px;
+}
+
+#side-bar h3 {
+  margin-bottom: 8px;
+}
+
+
 #side-bar input {
-  margin-bottom: 30px;
+  margin-bottom: 32px;
   width: 150px;
   margin-right: 8px;
 }
 
-
-/* tasks display */
-#main {
-    flex: 3;
-    height: 100vh;
-    border: 1px solid black;
-    border-top: none;
-    padding-left: 30px;
+/* Project Styles (Sidebar) */
+#projects > div { /* Targeting the direct children (project divs) */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100px;
+  margin-bottom: 12px;
+  cursor: pointer;
 }
+
+#projects > div > button { /* Targeting the remove button inside project divs */
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
+/* ------------ tasks display ------------*/
+#main {
+  flex: 3;
+  height: 100vh;
+  border-top: none;
+  padding-left: 30px;
+  padding-top: 60px;
+}
+
+#tasks h2 {
+  margin-bottom: 30px;
+}
+
+/* tasks */
+#tasks > div {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: start;
+  gap: 70px;
+}
+
+#tasks button {
+  background-color: white;
+  border: none;
+}
+
