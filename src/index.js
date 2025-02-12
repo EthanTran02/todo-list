@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Call renderProjects to display the initial project
     renderProjects();
-    renderForm()
+    renderForm() // delete this line when done impove ui for form!
     
 });
 
