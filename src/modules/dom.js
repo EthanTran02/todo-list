@@ -116,6 +116,35 @@ function renderAllTasks() {
                 renderAllTasks();
             });
 
+            taskLeft.addEventListener('click', e => {
+                e.stopPropagation
+
+                const modalPopup = document.getElementById('task-modal-popup')
+                const modalTitle = document.getElementById('modal-title')
+                const modalDesc = document.getElementById('modal-description')
+                const modalDueDate = document.getElementById('modal-duedate')
+                const modalPriority = document.getElementById('modal-priority')
+
+                const closeModal = document.getElementById('close-modal')
+                const updateModal = document.getElementById('update-modal')
+
+                modalTitle.textContent = task.title
+                modalDesc.textContent    = task.description
+                modalDueDate.textContent = task.dueDate
+                modalPriority.textContent = task.priority
+
+                modalPopup.style.display = 'block'
+
+                closeModal.addEventListener('click', e => {
+                    modalPopup.style.display = 'none'
+                })
+
+                updateModal.addEventListener('click', e => {
+                    // need to add functon for Update modal butotn
+                })
+
+            })
+
             taskLeft.appendChild(title);
             taskLeft.appendChild(date);
             taskLeft.appendChild(projectName);
@@ -205,9 +234,6 @@ function renderForm() {
     });
 }
 
-function tasksModalPopup() {
-
-}
 
 const addProjectButton = document.getElementById('add-project-button');
 const addProjectField = document.getElementById('add-project-field');
@@ -230,4 +256,4 @@ addProjectButton.addEventListener('click', () => {
     renderForm();
 });
 
-export { renderProjects, projectsArray };
+export { renderProjects, projectsArray, renderForm };
