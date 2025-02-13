@@ -1,41 +1,45 @@
-// DOM.js
+// DOM.js (using form recreation)
 import project from "./project";
 import task from "./task";
 
 let projectsArray = [];
 let currentProject = null;
-let form = document.createElement('div');
+// NO global form element: let form;
 const main = document.getElementById('main');
+const openFormBtn = document.createElement('button');
+
+openFormBtn.id = 'open-form-button';
+openFormBtn.innerText = 'Add task';
+openFormBtn.style.display = 'none';
+main.appendChild(openFormBtn);
 
 function renderProjects() {
     const projects = document.getElementById('projects');
     projects.innerHTML = '';
-    
-    // Add "All Tasks" option at the top
+
     const allTasksDiv = document.createElement('div');
     const allTasksName = document.createElement('p');
+
     allTasksName.innerText = 'All Tasks';
     allTasksDiv.appendChild(allTasksName);
     projects.appendChild(allTasksDiv);
 
-    // Store reference for styling
     let allTasksElement = allTasksName;
-    
-    // Add click event for "All Tasks"
+
     allTasksDiv.addEventListener('click', () => {
-        // Reset all project names to normal
         projectsArray.forEach(p => {
             if (p.nameElement) {
                 p.nameElement.style.fontWeight = 'normal';
             }
         });
-        
+
         allTasksElement.style.fontWeight = 'bold';
-        currentProject = null; // Set to null to indicate we're showing all tasks
+        currentProject = null;
         renderAllTasks();
-        form.innerHTML = ''; // Hide the form when showing all tasks
+        // No form hiding here, as it might not exist
+        openFormBtn.style.display = 'none';
     });
-    
+
     projectsArray.forEach(proj => {
         const projectDiv = document.createElement('div');
         const projectName = document.createElement('p');
@@ -50,7 +54,7 @@ function renderProjects() {
         projects.appendChild(projectDiv);
 
         proj.nameElement = projectName;
-        
+
         removeButton.addEventListener('click', (e) => {
             e.stopPropagation();
             const index = projectsArray.indexOf(proj);
@@ -65,7 +69,6 @@ function renderProjects() {
             if (projectsArray.length > 0) {
                 currentProject = projectsArray[0];
                 renderTasks();
-                renderForm();
             }
         });
 
@@ -78,9 +81,14 @@ function renderProjects() {
             allTasksElement.style.fontWeight = 'normal';
             currentProject = proj;
             renderTasks();
-            renderForm();
             projectName.style.fontWeight = 'bold';
+            openFormBtn.style.display = 'block';
         });
+    });
+
+    openFormBtn.addEventListener('click', () => {
+        renderForm();
+        openFormBtn.style.display = 'none';
     });
 }
 
@@ -88,21 +96,21 @@ function renderAllTasks() {
     const tasks = document.getElementById('tasks');
     tasks.innerHTML = '';
 
-    // Add header
     const header = document.createElement('h2');
     header.innerText = 'All Tasks';
     tasks.appendChild(header);
 
-    // Iterate through all projects and their tasks
     projectsArray.forEach(proj => {
         proj.tasks.forEach((task, taskIndex) => {
             const taskDiv = document.createElement('div');
             const taskLeft = document.createElement('div');
+            const checkbox = document.createElement('input');
             const title = document.createElement('h3');
             const date = document.createElement('p');
             const projectName = document.createElement('p');
             const removeTask = document.createElement('img');
 
+            checkbox.type = 'checkbox';
             title.innerText = task.title;
             date.innerText = task.dueDate;
             projectName.innerText = `Project: ${proj.name}`;
@@ -116,35 +124,53 @@ function renderAllTasks() {
                 renderAllTasks();
             });
 
-            taskLeft.addEventListener('click', e => {
-                e.stopPropagation
+            taskLeft.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openModal(task);
+            });
 
-                const modalPopup = document.getElementById('task-modal-popup')
-                const modalTitle = document.getElementById('modal-title')
-                const modalDesc = document.getElementById('modal-description')
-                const modalDueDate = document.getElementById('modal-duedate')
-                const modalPriority = document.getElementById('modal-priority')
+            function openModal(task) {
+                const modalPopup = document.getElementById('task-modal-popup');
+                const modalTitle = document.getElementById('modal-title');
+                const modalDesc = document.getElementById('modal-description');
+                const modalDueDate = document.getElementById('modal-duedate');
+                const modalPriority = document.getElementById('modal-priority');
+                const closeModal = document.getElementById('close-modal');
+                const updateModal = document.getElementById('update-modal');
 
-                const closeModal = document.getElementById('close-modal')
-                const updateModal = document.getElementById('update-modal')
+                modalTitle.value = task.title;
+                modalDesc.value = task.description;
+                modalDueDate.value = task.dueDate;
+                modalPriority.value = task.priority;
 
-                modalTitle.textContent = task.title
-                modalDesc.textContent    = task.description
-                modalDueDate.textContent = task.dueDate
-                modalPriority.textContent = task.priority
+                modalPopup.style.display = 'block';
 
-                modalPopup.style.display = 'block'
+                setTimeout(() => {
+                    const closeModalOutside = (event) => {
+                        if (!modalPopup.contains(event.target)) {
+                            modalPopup.style.display = 'none';
+                            document.removeEventListener('click', closeModalOutside);
+                        }
+                    };
+                    document.addEventListener('click', closeModalOutside);
+                }, 0);
 
-                closeModal.addEventListener('click', e => {
-                    modalPopup.style.display = 'none'
-                })
+                closeModal.onclick = () => {
+                    modalPopup.style.display = 'none';
+                };
 
-                updateModal.addEventListener('click', e => {
-                    // need to add functon for Update modal butotn
-                })
+                updateModal.onclick = () => {
+                    task.title = modalTitle.value;
+                    task.description = modalDesc.value;
+                    task.dueDate = modalDueDate.value;
+                    task.priority = modalPriority.value;
 
-            })
+                    modalPopup.style.display = 'none';
+                    renderAllTasks();
+                };
+            }
 
+            taskDiv.appendChild(checkbox);
             taskLeft.appendChild(title);
             taskLeft.appendChild(date);
             taskLeft.appendChild(projectName);
@@ -170,10 +196,12 @@ function renderTasks() {
     currentProject.tasks.forEach((task, index) => {
         const taskDiv = document.createElement('div');
         const taskLeft = document.createElement('div');
+        const checkbox = document.createElement('input');
         const title = document.createElement('h3');
         const date = document.createElement('p');
         const removeTask = document.createElement('img');
 
+        checkbox.type = 'checkbox';
         title.innerText = task.title;
         date.innerText = task.dueDate;
         removeTask.src = '../asset/trash-outline.svg';
@@ -185,6 +213,53 @@ function renderTasks() {
             renderTasks();
         });
 
+        taskLeft.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openModal(task);
+        });
+
+        function openModal(task) {
+            const modalPopup = document.getElementById('task-modal-popup');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDesc = document.getElementById('modal-description');
+            const modalDueDate = document.getElementById('modal-duedate');
+            const modalPriority = document.getElementById('modal-priority');
+            const closeModal = document.getElementById('close-modal');
+            const updateModal = document.getElementById('update-modal');
+
+            modalTitle.value = task.title;
+            modalDesc.value = task.description;
+            modalDueDate.value = task.dueDate;
+            modalPriority.value = task.priority;
+
+            modalPopup.style.display = 'block';
+
+            setTimeout(() => {
+                const closeModalOutside = (event) => {
+                    if (!modalPopup.contains(event.target)) {
+                        modalPopup.style.display = 'none';
+                        document.removeEventListener('click', closeModalOutside);
+                    }
+                };
+                document.addEventListener('click', closeModalOutside);
+            }, 0);
+
+            closeModal.onclick = () => {
+                modalPopup.style.display = 'none';
+            };
+
+            updateModal.onclick = () => {
+                task.title = modalTitle.value;
+                task.description = modalDesc.value;
+                task.dueDate = modalDueDate.value;
+                task.priority = modalPriority.value;
+
+                modalPopup.style.display = 'none';
+                renderTasks();
+            };
+        }
+
+        taskDiv.appendChild(checkbox);
         taskLeft.appendChild(title);
         taskLeft.appendChild(date);
         taskDiv.appendChild(taskLeft);
@@ -193,26 +268,31 @@ function renderTasks() {
     });
 }
 
-// Keep the rest of the code (renderForm and event listeners) the same
 function renderForm() {
-    form.innerHTML = '';
+    // Create a *new* form element each time
+    const form = document.createElement('div');
     form.innerHTML = `
-        <form>
-            <h2>Adding Tasks:</h2>
-            <input type="text" id="taskTitle" placeholder="Task Title">
-            <input type="text" id="taskDescription" placeholder="Task Description">
+    <form>
+        <input type="text" id="taskTitle" placeholder="Task Title">
+        <input type="text" id="taskDescription" placeholder="Task Description">
+        <div>
+            <label for="taskDueDate">Due date</label>
             <input type="date" id="taskDueDate">
+            <label for="taskDueDate">Priority</label>
             <select id="taskPriority">
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
             </select>
-            <button id="addTaskBtn">Add Task</button>
-        </form>
+
+        <button id="addTaskBtn">Add Task</button>
+        </div>
+    </form>
     `;
     main.appendChild(form);
 
     const addTaskBtn = document.getElementById('addTaskBtn');
+
     addTaskBtn.addEventListener('click', (e) => {
         e.preventDefault();
 
@@ -230,10 +310,11 @@ function renderForm() {
         if (currentProject) {
             currentProject.tasks.push(newTask);
             renderTasks();
+            form.remove(); // Remove the form from the DOM
+            openFormBtn.style.display = 'block';
         }
     });
 }
-
 
 const addProjectButton = document.getElementById('add-project-button');
 const addProjectField = document.getElementById('add-project-field');
@@ -252,8 +333,7 @@ addProjectButton.addEventListener('click', () => {
     addProjectField.value = '';
 
     renderProjects();
-    renderTasks();
-    renderForm();
+    openFormBtn.style.display = 'block';
 });
 
 export { renderProjects, projectsArray, renderForm };

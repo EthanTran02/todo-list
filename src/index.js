@@ -1,5 +1,5 @@
 import './style.css';
-import { renderProjects, projectsArray, renderForm } from './modules/DOM';
+import { renderProjects, projectsArray,  } from './modules/DOM';
 import Project from './modules/project';
 import Task from './modules/task';
 
@@ -13,14 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     projectsArray.push(project1);
 
+
     // Call renderProjects to display the initial project
     renderProjects();
-    renderForm() // delete this line when done impove ui for form!
-    
 });
 
-console.log('okemnhaem');
 
 // IMPORTANT!!
-// click project -> open modal popup that can adjust the task's infomation
-// update UI for form
+// create new inital project name 'finished' unremoveable, 
+// click on the task's checkbox remove the task from prject, AND transfer that task to 'fished' project

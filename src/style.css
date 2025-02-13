@@ -116,6 +116,15 @@ body {
   margin-bottom: 30px;
 }
 
+#tasks input {
+  margin-right: 16px;
+  width: 16px;
+}
+
+#tasks > div {
+  width: 700px;
+}
+
 /* tasks */
 #tasks > div {
   padding-top: 20px;
@@ -140,10 +149,39 @@ body {
   cursor: pointer;
 }
 
+#open-form-button {
+  margin-top: 32px;
+}
+
+/* form */
 form {
-  padding: 12px;
   padding-left: 0;
-  margin-top: 12px;
+  margin-top: 32px;
+  margin-left: 12px;
+}
+
+#taskTitle, #taskDescription {
+  width: 250px;
+}
+#taskTitle {
+  margin-right: 12px;
+}
+
+#taskDueDate {
+  margin-right: 55px;
+}
+
+#taskPriority {
+  margin-right: 12px;
+}
+
+form > div {
+  margin-top: 16px;
+}
+
+form button {
+  padding-left: 14px;
+  padding-right: 14px;
 }
 
 /* modal popup */
@@ -166,8 +204,17 @@ form {
   margin-bottom: 20px;
 }
 
-#task-modal-popup > p {
-  margin-bottom: 8px;
+#task-modal-popup #modal-title,
+#task-modal-popup #modal-description {
+  margin-bottom: 12px;
+}
+
+#task-modal-popup #modal-description {
+  width: 100%;
+}
+
+#due-date-div {
+  margin-bottom: 12px;
 }
 
 #close-modal {
@@ -178,7 +225,6 @@ form {
   cursor: pointer;
   padding: 4px;
 }
-
 
 #update-modal {
   padding: 8px;
