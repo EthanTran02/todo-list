@@ -1,30 +1,69 @@
-// DOM.js (using form recreation)
+// DOM.js
 import project from "./project";
 import task from "./task";
 
 let projectsArray = [];
 let currentProject = null;
-// NO global form element: let form;
+let finishedTasks = [];
+
 const main = document.getElementById('main');
 const openFormBtn = document.createElement('button');
 
+// Initialize open form button once
 openFormBtn.id = 'open-form-button';
 openFormBtn.innerText = 'Add task';
 openFormBtn.style.display = 'none';
 main.appendChild(openFormBtn);
 
-function renderProjects() {
+// Add event listener to open form button once, outside of any render functions
+openFormBtn.addEventListener('click', () => {
+    // Remove any existing forms first
+    const existingForm = document.querySelector('form');
+    if (existingForm) {
+        existingForm.remove();
+    }
+    renderForm();
+    openFormBtn.style.display = 'none';
+});
+
+function renderProjects() { 
     const projects = document.getElementById('projects');
     projects.innerHTML = '';
 
     const allTasksDiv = document.createElement('div');
     const allTasksName = document.createElement('p');
 
+    const finishedtasksDiv = document.createElement('div');
+    const finishedtasksName = document.createElement('p');
+
     allTasksName.innerText = 'All Tasks';
     allTasksDiv.appendChild(allTasksName);
     projects.appendChild(allTasksDiv);
+        
+    finishedtasksName.innerText = 'Finished Tasks';
+    finishedtasksDiv.appendChild(finishedtasksName);
+    finishedtasksDiv.id = 'finished-tasks-div';
 
     let allTasksElement = allTasksName;
+
+    finishedtasksDiv.addEventListener('click', () => {
+        projectsArray.forEach(p => {
+            if (p.nameElement) {
+                p.nameElement.style.fontWeight = 'normal';
+            }
+        });
+        allTasksElement.style.fontWeight = 'normal';
+        finishedtasksDiv.style.fontWeight = 'bold';
+        currentProject = null;
+        renderFinishedTasks();
+        openFormBtn.style.display = 'none';
+        
+        // Remove any existing forms
+        const existingForm = document.querySelector('form');
+        if (existingForm) {
+            existingForm.remove();
+        }
+    });
 
     allTasksDiv.addEventListener('click', () => {
         projectsArray.forEach(p => {
@@ -34,10 +73,16 @@ function renderProjects() {
         });
 
         allTasksElement.style.fontWeight = 'bold';
+        finishedtasksDiv.style.fontWeight = 'normal';
         currentProject = null;
         renderAllTasks();
-        // No form hiding here, as it might not exist
         openFormBtn.style.display = 'none';
+        
+        // Remove any existing forms
+        const existingForm = document.querySelector('form');
+        if (existingForm) {
+            existingForm.remove();
+        }
     });
 
     projectsArray.forEach(proj => {
@@ -63,6 +108,13 @@ function renderProjects() {
                 if (currentProject === proj) {
                     currentProject = null;
                     document.getElementById('tasks').innerHTML = '';
+                    openFormBtn.style.display = 'none';
+                    
+                    // Remove any existing forms
+                    const existingForm = document.querySelector('form');
+                    if (existingForm) {
+                        existingForm.remove();
+                    }
                 }
             }
             renderProjects();
@@ -79,16 +131,113 @@ function renderProjects() {
                 }
             });
             allTasksElement.style.fontWeight = 'normal';
+            finishedtasksDiv.style.fontWeight = 'normal';
             currentProject = proj;
             renderTasks();
             projectName.style.fontWeight = 'bold';
             openFormBtn.style.display = 'block';
+            
+            // Remove any existing forms
+            const existingForm = document.querySelector('form');
+            if (existingForm) {
+                existingForm.remove();
+            }
         });
     });
 
-    openFormBtn.addEventListener('click', () => {
-        renderForm();
-        openFormBtn.style.display = 'none';
+    projects.appendChild(finishedtasksDiv);
+}
+
+function renderTasks() {
+    const tasks = document.getElementById('tasks');
+    tasks.innerHTML = '';
+
+    if (!currentProject) {
+        return;
+    }
+
+    const projectName = document.createElement('h2');
+    projectName.innerText = currentProject.name;
+    tasks.appendChild(projectName);
+
+    currentProject.tasks.forEach((task, index) => {
+        const taskDiv = document.createElement('div');
+        const taskLeft = document.createElement('div');
+        const checkbox = document.createElement('input');
+        const title = document.createElement('h3');
+        const date = document.createElement('p');
+        const removeTask = document.createElement('img');
+
+        checkbox.type = 'checkbox';
+        title.innerText = task.title;
+        date.innerText = task.dueDate;
+        removeTask.src = '../asset/trash-outline.svg';
+        removeTask.alt = 'Remove task';
+
+        checkbox.addEventListener('click', () => {
+            currentProject.removeTask(task);
+            finishedTasks.push(task);
+            renderTasks();
+        });
+
+        removeTask.addEventListener('click', e => {
+            e.stopPropagation();
+            currentProject.removeTask(index);
+            renderTasks();
+        });
+
+        taskLeft.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openModal(task);
+        });
+
+        function openModal(task) {
+            const modalPopup = document.getElementById('task-modal-popup');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDesc = document.getElementById('modal-description');
+            const modalDueDate = document.getElementById('modal-duedate');
+            const modalPriority = document.getElementById('modal-priority');
+            const closeModal = document.getElementById('close-modal');
+            const updateModal = document.getElementById('update-modal');
+
+            modalTitle.value = task.title;
+            modalDesc.value = task.description;
+            modalDueDate.value = task.dueDate;
+            modalPriority.value = task.priority;
+
+            modalPopup.style.display = 'block';
+
+            setTimeout(() => {
+                const closeModalOutside = (event) => {
+                    if (!modalPopup.contains(event.target)) {
+                        modalPopup.style.display = 'none';
+                        document.removeEventListener('click', closeModalOutside);
+                    }
+                };
+                document.addEventListener('click', closeModalOutside);
+            }, 0);
+
+            closeModal.onclick = () => {
+                modalPopup.style.display = 'none';
+            };
+
+            updateModal.onclick = () => {
+                task.title = modalTitle.value;
+                task.description = modalDesc.value;
+                task.dueDate = modalDueDate.value;
+                task.priority = modalPriority.value;
+
+                modalPopup.style.display = 'none';
+                renderTasks();
+            };
+        }
+
+        taskDiv.appendChild(checkbox);
+        taskLeft.appendChild(title);
+        taskLeft.appendChild(date);
+        taskDiv.appendChild(taskLeft);
+        taskDiv.appendChild(removeTask);
+        tasks.appendChild(taskDiv);
     });
 }
 
@@ -117,6 +266,12 @@ function renderAllTasks() {
             projectName.style.color = '#666';
             removeTask.src = '../asset/trash-outline.svg';
             removeTask.alt = 'Remove task';
+
+            checkbox.addEventListener('click', () => {
+                proj.removeTask(task);
+                finishedTasks.push(task);
+                renderAllTasks();
+            });
 
             removeTask.addEventListener('click', e => {
                 e.stopPropagation();
@@ -181,27 +336,21 @@ function renderAllTasks() {
     });
 }
 
-function renderTasks() {
-    const tasks = document.getElementById('tasks');
-    tasks.innerHTML = '';
+function renderFinishedTasks() {
+    const tasksContainer = document.getElementById('tasks');
+    tasksContainer.innerHTML = '';
 
-    if (!currentProject) {
-        return;
-    }
+    const header = document.createElement('h2');
+    header.innerText = 'Finished tasks';
+    tasksContainer.appendChild(header);
 
-    const projectName = document.createElement('h2');
-    projectName.innerText = currentProject.name;
-    tasks.appendChild(projectName);
-
-    currentProject.tasks.forEach((task, index) => {
+    finishedTasks.forEach((task, index) => {
         const taskDiv = document.createElement('div');
         const taskLeft = document.createElement('div');
-        const checkbox = document.createElement('input');
         const title = document.createElement('h3');
         const date = document.createElement('p');
         const removeTask = document.createElement('img');
 
-        checkbox.type = 'checkbox';
         title.innerText = task.title;
         date.innerText = task.dueDate;
         removeTask.src = '../asset/trash-outline.svg';
@@ -209,91 +358,48 @@ function renderTasks() {
 
         removeTask.addEventListener('click', e => {
             e.stopPropagation();
-            currentProject.removeTask(index);
-            renderTasks();
+            finishedTasks.splice(index, 1);
+            renderFinishedTasks();
         });
 
-        taskLeft.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openModal(task);
-        });
-
-        function openModal(task) {
-            const modalPopup = document.getElementById('task-modal-popup');
-            const modalTitle = document.getElementById('modal-title');
-            const modalDesc = document.getElementById('modal-description');
-            const modalDueDate = document.getElementById('modal-duedate');
-            const modalPriority = document.getElementById('modal-priority');
-            const closeModal = document.getElementById('close-modal');
-            const updateModal = document.getElementById('update-modal');
-
-            modalTitle.value = task.title;
-            modalDesc.value = task.description;
-            modalDueDate.value = task.dueDate;
-            modalPriority.value = task.priority;
-
-            modalPopup.style.display = 'block';
-
-            setTimeout(() => {
-                const closeModalOutside = (event) => {
-                    if (!modalPopup.contains(event.target)) {
-                        modalPopup.style.display = 'none';
-                        document.removeEventListener('click', closeModalOutside);
-                    }
-                };
-                document.addEventListener('click', closeModalOutside);
-            }, 0);
-
-            closeModal.onclick = () => {
-                modalPopup.style.display = 'none';
-            };
-
-            updateModal.onclick = () => {
-                task.title = modalTitle.value;
-                task.description = modalDesc.value;
-                task.dueDate = modalDueDate.value;
-                task.priority = modalPriority.value;
-
-                modalPopup.style.display = 'none';
-                renderTasks();
-            };
-        }
-
-        taskDiv.appendChild(checkbox);
         taskLeft.appendChild(title);
         taskLeft.appendChild(date);
         taskDiv.appendChild(taskLeft);
         taskDiv.appendChild(removeTask);
-        tasks.appendChild(taskDiv);
+        tasksContainer.appendChild(taskDiv);
     });
 }
 
 function renderForm() {
-    // Create a *new* form element each time
-    const form = document.createElement('div');
-    form.innerHTML = `
-    <form>
-        <input type="text" id="taskTitle" placeholder="Task Title">
-        <input type="text" id="taskDescription" placeholder="Task Description">
-        <div>
-            <label for="taskDueDate">Due date</label>
-            <input type="date" id="taskDueDate">
-            <label for="taskDueDate">Priority</label>
-            <select id="taskPriority">
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-            </select>
+    // Remove any existing forms first
+    const existingForm = document.querySelector('form');
+    if (existingForm) {
+        existingForm.remove();
+    }
 
-        <button id="addTaskBtn">Add Task</button>
-        </div>
-    </form>
+    const formContainer = document.createElement('div');
+    formContainer.innerHTML = `
+        <form id="taskForm">
+            <input type="text" id="taskTitle" placeholder="Task Title">
+            <input type="text" id="taskDescription" placeholder="Task Description">
+            <div>
+                <label for="taskDueDate">Due date</label>
+                <input type="date" id="taskDueDate">
+                <label for="taskPriority">Priority</label>
+                <select id="taskPriority">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+                <button id="addTaskBtn">Add Task</button>
+            </div>
+        </form>
     `;
-    main.appendChild(form);
+    main.appendChild(formContainer);
 
-    const addTaskBtn = document.getElementById('addTaskBtn');
+    const form = document.getElementById('taskForm');
 
-    addTaskBtn.addEventListener('click', (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         const taskTitle = document.getElementById('taskTitle').value;
@@ -310,10 +416,12 @@ function renderForm() {
         if (currentProject) {
             currentProject.tasks.push(newTask);
             renderTasks();
-            form.remove(); // Remove the form from the DOM
+            formContainer.remove();
             openFormBtn.style.display = 'block';
         }
-    });
+    };
+
+    form.addEventListener('submit', handleSubmit);
 }
 
 const addProjectButton = document.getElementById('add-project-button');

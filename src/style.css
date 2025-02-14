@@ -87,7 +87,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 120px;
+  width: 150px;
   margin-bottom: 16px;
   cursor: pointer;
 }
@@ -150,6 +150,10 @@ body {
 }
 
 #open-form-button {
+  margin-top: 32px;
+}
+
+#finished-tasks-div {
   margin-top: 32px;
 }
 

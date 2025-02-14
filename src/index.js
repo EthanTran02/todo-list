@@ -18,7 +18,3 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProjects();
 });
 
-
-// IMPORTANT!!
-// create new inital project name 'finished' unremoveable, 
-// click on the task's checkbox remove the task from prject, AND transfer that task to 'fished' project
