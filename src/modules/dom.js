@@ -1,6 +1,6 @@
-// DOM.js
 import project from "./project";
 import task from "./task";
+import Storage from './storage';
 
 let projectsArray = [];
 let currentProject = null;
@@ -105,6 +105,7 @@ function renderProjects() {
             const index = projectsArray.indexOf(proj);
             if (index > -1) {
                 projectsArray.splice(index, 1);
+                Storage.saveData(projectsArray, finishedTasks);
                 if (currentProject === proj) {
                     currentProject = null;
                     document.getElementById('tasks').innerHTML = '';
@@ -177,12 +178,14 @@ function renderTasks() {
         checkbox.addEventListener('click', () => {
             currentProject.removeTask(task);
             finishedTasks.push(task);
+            Storage.saveData(projectsArray, finishedTasks)
             renderTasks();
         });
 
         removeTask.addEventListener('click', e => {
             e.stopPropagation();
             currentProject.removeTask(index);
+            Storage.saveData(projectsArray, finishedTasks);
             renderTasks();
         });
 
@@ -227,6 +230,7 @@ function renderTasks() {
                 task.dueDate = modalDueDate.value;
                 task.priority = modalPriority.value;
 
+                Storage.saveData(projectsArray, finishedTasks);
                 modalPopup.style.display = 'none';
                 renderTasks();
             };
@@ -270,12 +274,14 @@ function renderAllTasks() {
             checkbox.addEventListener('click', () => {
                 proj.removeTask(task);
                 finishedTasks.push(task);
+                Storage.saveData(projectsArray, finishedTasks)
                 renderAllTasks();
             });
 
             removeTask.addEventListener('click', e => {
                 e.stopPropagation();
                 proj.removeTask(taskIndex);
+                Storage.saveData(projectsArray, finishedTasks);
                 renderAllTasks();
             });
 
@@ -320,6 +326,7 @@ function renderAllTasks() {
                     task.dueDate = modalDueDate.value;
                     task.priority = modalPriority.value;
 
+                    Storage.saveData(projectsArray, finishedTasks);
                     modalPopup.style.display = 'none';
                     renderAllTasks();
                 };
@@ -359,6 +366,7 @@ function renderFinishedTasks() {
         removeTask.addEventListener('click', e => {
             e.stopPropagation();
             finishedTasks.splice(index, 1);
+            Storage.saveData(projectsArray, finishedTasks);
             renderFinishedTasks();
         });
 
@@ -415,6 +423,7 @@ function renderForm() {
         const newTask = new task(taskTitle, taskDescription, taskDueDate, taskPriority);
         if (currentProject) {
             currentProject.tasks.push(newTask);
+            Storage.saveData(projectsArray, finishedTasks);
             renderTasks();
             formContainer.remove();
             openFormBtn.style.display = 'block';
@@ -442,6 +451,8 @@ addProjectButton.addEventListener('click', () => {
 
     renderProjects();
     openFormBtn.style.display = 'block';
+
+    Storage.saveData(projectsArray, finishedTasks)
 });
 
-export { renderProjects, projectsArray, renderForm };
+export { renderProjects, projectsArray, renderForm, finishedTasks };
