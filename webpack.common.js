@@ -7,7 +7,9 @@ module.exports = {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
-    publicPath: "", // Important for GitHub Pages
+    publicPath: process.env.NODE_ENV === 'production' 
+      ? '/todo-list/' // Updated to match your repository name
+      : '/',
   },
   module: {
     rules: [
@@ -17,7 +19,10 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset',
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[hash][ext][query]'
+        }
       },
     ],
   },

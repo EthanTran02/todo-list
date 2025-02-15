@@ -3,5 +3,8 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
   mode: 'production',
-  devtool: 'source-map', // Use 'source-map' for production (better for performance)
+  devtool: 'source-map',
+  output: {
+    publicPath: '/todo-list/', // Updated to match your repository name
+  },
 });
