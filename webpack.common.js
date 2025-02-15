@@ -8,8 +8,9 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     clean: true,
     publicPath: process.env.NODE_ENV === 'production' 
-      ? '/todo-list/' // Updated to match your repository name
+      ? '/todo-list/' // Your repository name
       : '/',
+    assetModuleFilename: 'assets/[hash][ext][query]'
   },
   module: {
     rules: [
@@ -20,9 +21,6 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
-        generator: {
-          filename: 'assets/[hash][ext][query]'
-        }
       },
     ],
   },

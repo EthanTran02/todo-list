@@ -1,6 +1,7 @@
 import project from "./project";
 import task from "./task";
 import Storage from './storage';
+import trashIcon from '../asset/trash-outline.svg';
 
 let projectsArray = [];
 let currentProject = null;
@@ -91,7 +92,7 @@ function renderProjects() {
         const removeButton = document.createElement('img');
 
         projectName.innerText = proj.name;
-        removeButton.src = '../asset/trash-outline.svg';
+        removeButton.src = trashIcon;
         removeButton.alt = 'Remove Project';
 
         projectDiv.appendChild(projectName);
@@ -172,7 +173,7 @@ function renderTasks() {
         checkbox.type = 'checkbox';
         title.innerText = task.title;
         date.innerText = task.dueDate;
-        removeTask.src = '../asset/trash-outline.svg';
+        removeTask.src = trashIcon;
         removeTask.alt = 'Remove task';
 
         checkbox.addEventListener('click', () => {
@@ -268,7 +269,7 @@ function renderAllTasks() {
             date.innerText = task.dueDate;
             projectName.innerText = `Project: ${proj.name}`;
             projectName.style.color = '#666';
-            removeTask.src = '../asset/trash-outline.svg';
+            removeTask.src = trashIcon;
             removeTask.alt = 'Remove task';
 
             checkbox.addEventListener('click', () => {
@@ -360,7 +361,7 @@ function renderFinishedTasks() {
 
         title.innerText = task.title;
         date.innerText = task.dueDate;
-        removeTask.src = '../asset/trash-outline.svg';
+        removeTask.src = trashIcon;
         removeTask.alt = 'Remove task';
 
         removeTask.addEventListener('click', e => {
