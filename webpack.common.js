@@ -7,10 +7,7 @@ module.exports = {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
-    publicPath: process.env.NODE_ENV === 'production' 
-      ? '/todo-list/' // Your repository name
-      : '/',
-    assetModuleFilename: 'assets/[hash][ext][query]'
+    publicPath: "",
   },
   module: {
     rules: [
