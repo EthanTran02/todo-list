@@ -175,6 +175,7 @@ function renderTasks() {
     date.innerText = task.dueDate;
     removeTask.src = trashIcon;
     removeTask.alt = "Remove task";
+    taskLeft.style.width = "100%";
 
     checkbox.addEventListener("click", () => {
       currentProject.removeTask(task);
@@ -271,6 +272,7 @@ function renderAllTasks() {
       projectName.style.color = "#666";
       removeTask.src = trashIcon;
       removeTask.alt = "Remove task";
+      taskLeft.style.width = "100%";
 
       checkbox.addEventListener("click", () => {
         proj.removeTask(task);
@@ -363,6 +365,7 @@ function renderFinishedTasks() {
     date.innerText = task.dueDate;
     removeTask.src = trashIcon;
     removeTask.alt = "Remove task";
+    taskLeft.style.width = "100%";
 
     removeTask.addEventListener("click", (e) => {
       e.stopPropagation();
