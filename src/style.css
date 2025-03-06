@@ -10,14 +10,16 @@
   margin: 0;
 }
 
+/* 3. Add accessible line-height and improve text rendering */
 body {
-  /* 3. Add accessible line-height */
   line-height: 1.5;
-  /* 4. Improve text rendering */
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-/* 5. Improve media defaults */
+/* 4. Improve media defaults */
 img,
 picture,
 video,
@@ -27,7 +29,7 @@ svg {
   max-width: 100%;
 }
 
-/* 6. Inherit fonts for form controls */
+/* 5. Inherit fonts for form controls */
 input,
 button,
 textarea,
@@ -35,7 +37,7 @@ select {
   font: inherit;
 }
 
-/* 7. Avoid text overflows */
+/* 6. Avoid text overflows */
 p,
 h1,
 h2,
@@ -46,7 +48,7 @@ h6 {
   overflow-wrap: break-word;
 }
 
-/* 8. Improve line wrapping */
+/* 7. Improve line wrapping */
 p {
   text-wrap: pretty;
 }
@@ -59,9 +61,7 @@ h6 {
   text-wrap: balance;
 }
 
-/*
-  9. Create a root stacking context
-*/
+/* 8. Create a root stacking context */
 #root,
 #__next {
   isolation: isolate;
@@ -69,22 +69,14 @@ h6 {
 
 /* -------------------------------------------- */
 
-body {
-  display: flex;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-/* ------------ side bar ------------*/
-
+/* Sidebar */
 #side-bar {
   flex: 1;
   height: 100vh;
+  background-color: #333;
+  color: #fff;
+  padding: 60px 30px;
   border-top: none;
-  background-color: #ededed;
-
-  padding-left: 30px;
-  padding-top: 60px;
 }
 
 #side-bar h1 {
@@ -99,144 +91,186 @@ body {
   margin-bottom: 32px;
   width: 150px;
   margin-right: 8px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 /* Project Styles (Sidebar) */
 #projects > div {
-  /* Targeting the direct children (project divs) */
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 150px;
   margin-bottom: 16px;
+  padding: 8px;
   cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+#projects > div:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+#projects > div > p {
+  font-weight: bold;
+  font-size: 1.1em;
 }
 
 #projects > div > button {
-  /* Targeting the remove button inside project divs */
   border: none;
-  background-color: white;
+  background-color: transparent;
   cursor: pointer;
   font-size: 16px;
+  color: #fff;
 }
 
 #projects img {
   max-width: 16px;
+  filter: invert(1); /* Ensures visibility on dark background */
+  transition: transform 0.3s;
 }
 
-/* ------------ tasks display ------------*/
+#projects img:hover {
+  transform: scale(1.2);
+}
+
+/* Main Content */
 #main {
   flex: 3;
   height: 100vh;
+  background-color: #f9f9f9;
+  padding: 60px 30px;
   border-top: none;
-  padding-left: 30px;
-  padding-top: 60px;
 }
 
 #tasks h2 {
   margin-bottom: 30px;
 }
 
-#tasks input {
-  margin-right: 16px;
-  width: 16px;
-}
-
+/* Task Styles */
 #tasks > div {
   width: 700px;
-}
-
-/* tasks */
-#tasks > div {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgb(201, 201, 201);
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: start;
+  align-items: center;
   cursor: pointer;
+  transition: box-shadow 0.3s;
 }
 
-#tasks > div > div {
-  width: 500px;
+#tasks > div:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-#tasks button {
-  background-color: white;
-  border: none;
+#tasks input[type="checkbox"] {
+  margin-right: 16px;
+  width: 16px;
 }
 
 #tasks img {
   max-width: 20px;
   cursor: pointer;
+  transition: transform 0.3s;
 }
 
+#tasks img:hover {
+  transform: scale(1.2);
+}
+
+/* Add Task Button */
 #open-form-button {
   margin-top: 32px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-#finished-tasks-div {
-  margin-top: 32px;
+#open-form-button:hover {
+  background-color: #0056b3;
 }
 
-/* form */
+/* Form Styling */
 form {
-  padding-left: 0;
+  padding: 20px;
   margin-top: 32px;
-  margin-left: 12px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#taskTitle,
-#taskDescription {
+form input,
+form select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   width: 250px;
-}
-#taskTitle {
-  margin-right: 12px;
+  margin-bottom: 16px;
 }
 
-#taskDueDate {
-  margin-right: 55px;
+form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-#taskPriority {
-  margin-right: 12px;
+form button:hover {
+  background-color: #0056b3;
 }
 
 form > div {
   margin-top: 16px;
 }
 
-form button {
-  padding-left: 14px;
-  padding-right: 14px;
-}
-
-/* modal popup */
+/* Modal Popup */
 #task-modal-popup {
   position: fixed;
-  top: 100px;
-  left: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 400px;
   padding: 30px;
-  background-color: white;
-
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
   z-index: 1;
-
-  box-shadow: 0px 0px 20px rgb(222, 222, 222);
-
   display: none;
+  animation: fadeIn 0.3s;
 }
 
-#task-modal-popup > h2 {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#task-modal-popup h2 {
   margin-bottom: 20px;
 }
 
-#task-modal-popup #modal-title,
-#task-modal-popup #modal-description {
-  margin-bottom: 12px;
-}
-
-#task-modal-popup #modal-description {
+#task-modal-popup input,
+#task-modal-popup textarea,
+#task-modal-popup select {
   width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 #due-date-div {
@@ -245,24 +279,51 @@ form button {
 
 #close-modal {
   position: absolute;
-  right: 30px;
-  top: 20px;
+  right: 10px;
+  top: 10px;
   font-size: 24px;
   cursor: pointer;
-  padding: 4px;
+  color: #aaa;
+}
+
+#close-modal:hover {
+  color: #000;
 }
 
 #update-modal {
   padding: 8px;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 4px;
   margin-top: 40px;
-  background-color: rgb(235, 235, 235);
+  background-color: #007bff;
+  color: #fff;
   cursor: pointer;
-  transition: 0.1s;
+  transition: background-color 0.3s;
 }
 
 #update-modal:hover {
-  background-color: rgb(210, 210, 210);
-  transition: 0.1s;
+  background-color: #0056b3;
+}
+
+/* Finished Tasks Section */
+#finished-tasks-div {
+  margin-top: 32px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  #side-bar,
+  #main {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+  }
+
+  #tasks > div {
+    width: 100%;
+  }
 }
