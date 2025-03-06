@@ -1,16 +1,16 @@
-import task from "./task"
+import task from "./task";
 
 export default class Project {
-    constructor(name) {
-        this.name = name
-        this.tasks = []
-    }
+  constructor(name) {
+    this.name = name;
+    this.tasks = [];
+  }
 
-    addTask(task) {
-        this.tasks.push(task)
-    }
+  addTask(task) {
+    this.tasks.push(task);
+  }
 
-    removeTask(index) {
-        this.tasks.splice(index, 1)
-    }
+  removeTask(index) {
+    this.tasks.splice(index, 1);
+  }
 }
