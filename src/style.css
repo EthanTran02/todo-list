@@ -77,6 +77,8 @@ h6 {
   color: #fff;
   padding: 60px 30px;
   border-top: none;
+
+  height: auto;
 }
 
 #side-bar h1 {
@@ -143,6 +145,9 @@ h6 {
   background-color: #f9f9f9;
   padding: 60px 30px;
   border-top: none;
+
+  min-height: 100vh;
+  height: auto;
 }
 
 #tasks h2 {
@@ -169,7 +174,6 @@ h6 {
 
 #tasks input[type="checkbox"] {
   margin-right: 16px;
-  width: 16px;
 }
 
 #tasks img {
