@@ -43,12 +43,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Your existing initialization code for first-time users
     const project1 = new Project("default");
     const task1 = new Task(
-      "wash dishes",
+      "Wash dishes",
       "washes dishes before mom go home",
       "2025-02-17",
       "High"
     );
-    const task2 = new Task("play tenis", "i dont know", "2025-02-17", "Medium");
+    const task2 = new Task(
+      "Play tenis",
+      "play tenis at 3PM",
+      "2025-02-17",
+      "Medium"
+    );
     project1.addTask(task1);
     project1.addTask(task2);
     projectsArray.push(project1);

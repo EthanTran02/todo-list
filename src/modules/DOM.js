@@ -622,7 +622,7 @@ function renderForm() {
         </div>
         <button id="addTaskBtn" type="submit">Add</button>
     </form>
-`;  
+`;
   main.appendChild(formContainer);
 
   const form = document.getElementById("taskForm");
