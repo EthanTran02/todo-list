@@ -234,12 +234,14 @@ body {
   border-left: 4px solid transparent;
 }
 
-#tasks > div:not(.header-container):not(.project-header):hover {
+#tasks
+  > div:not(.header-container):not(.project-header):not(.empty-state):hover {
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   transform: translateY(-3px);
 }
 #tasks > .header-container:hover,
-#tasks > .project-header:hover {
+#tasks > .project-header:hover,
+#tasks > .empty-state:hover {
   cursor: default;
 }
 
@@ -337,24 +339,75 @@ input[type="checkbox"]:checked::after {
   color: white;
 }
 
+/* Form container */
+.form-container {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-top: 1rem;
+  overflow: hidden;
+  max-width: 400px;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+
+.form-header h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
 /* Form styling */
+form {
+  padding: 0.75rem;
+}
+
+.form-group {
+  margin-bottom: 0.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--text-dark);
+}
+
+/* Make inputs smaller and simpler */
 form input,
 form textarea,
 form select {
   width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
+  padding: 0.4rem 0.5rem;
+  margin-bottom: 0.4rem;
   border: 1px solid #e0e0e0;
   border-radius: var(--border-radius);
-  transition: var(--transition);
+  font-size: 0.85rem;
 }
 
-form input:focus,
-form textarea:focus,
-form select:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
-  outline: none;
+form textarea {
+  height: 50px;
+  min-height: unset;
+  resize: vertical;
+}
+
+/* Simpler button */
+#addTaskBtn {
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.4rem;
+  font-size: 0.85rem;
 }
 
 /* Add Task Button */

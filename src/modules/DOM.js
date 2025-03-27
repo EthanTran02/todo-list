@@ -593,36 +593,36 @@ function renderForm() {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container";
   formContainer.innerHTML = `
-        <form id="taskForm">
-            <div class="form-header">
-                <h3>Add New Task</h3>
-                <div id="close-form">×</div>
+    <form id="taskForm">
+        <div class="form-header">
+            <h3>New Task</h3>
+            <div id="close-form">×</div>
+        </div>
+        <div class="form-group">
+            <label for="taskTitle">Title</label>
+            <input type="text" id="taskTitle" placeholder="Task title" required>
+        </div>
+        <div class="form-group">
+            <label for="taskDescription">Description</label>
+            <textarea id="taskDescription" placeholder="Brief description"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="taskDueDate">Due</label>
+                <input type="date" id="taskDueDate" required>
             </div>
             <div class="form-group">
-                <label for="taskTitle">Task Title</label>
-                <input type="text" id="taskTitle" placeholder="Enter task title" required>
+                <label for="taskPriority">Priority</label>
+                <select id="taskPriority">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
             </div>
-            <div class="form-group">
-                <label for="taskDescription">Description</label>
-                <textarea id="taskDescription" placeholder="Enter task description" rows="3"></textarea>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="taskDueDate">Due date</label>
-                    <input type="date" id="taskDueDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="taskPriority">Priority</label>
-                    <select id="taskPriority">
-                        <option value="Low">Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="High">High</option>
-                    </select>
-                </div>
-            </div>
-            <button id="addTaskBtn" type="submit">Add Task</button>
-        </form>
-    `;
+        </div>
+        <button id="addTaskBtn" type="submit">Add</button>
+    </form>
+`;  
   main.appendChild(formContainer);
 
   const form = document.getElementById("taskForm");
