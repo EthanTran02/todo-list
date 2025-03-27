@@ -3,16 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Task Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="side-bar">
-      <h1>Hello User</h1>
+      <h1>Task Manager</h1>
 
-      <h3>Add new project:</h3>
-
-      <input type="text" id="add-project-field" placeholder="Project name" />
-      <button id="add-project-button">Add</button>
+      <div class="add-project-container">
+        <h3>Add new project:</h3>
+        <div class="input-container">
+          <input
+            type="text"
+            id="add-project-field"
+            placeholder="Project name"
+          />
+          <button id="add-project-button">Add</button>
+        </div>
+      </div>
 
       <!-- Projects display section -->
       <div id="projects"></div>
@@ -24,21 +37,37 @@
 
     <!-- MODAL POPUP -->
     <div id="task-modal-popup">
-      <div id="close-modal">x</div>
+      <div id="close-modal">×</div>
 
-      <h2>Edit taks:</h2>
-      <input id="modal-title" type="text" />
-      <textarea id="modal-description" type="text"></textarea>
-      <div id="due-date-div">
-        <label for="modal-duedate">Due date</label>
-        <input id="modal-duedate" type="date" />
+      <h2>Edit task:</h2>
+      <div class="form-group">
+        <label for="modal-title">Title</label>
+        <input id="modal-title" type="text" placeholder="Task title" />
       </div>
-      <label for="modal-priority">Priority</label>
-      <select id="modal-priority">
-        <option value="">Low</option>
-        <option value="">Medium</option>
-        <option value="">High</option>
-      </select>
+
+      <div class="form-group">
+        <label for="modal-description">Description</label>
+        <textarea
+          id="modal-description"
+          placeholder="Task description"
+        ></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="modal-duedate">Due date</label>
+          <input id="modal-duedate" type="date" />
+        </div>
+
+        <div class="form-group">
+          <label for="modal-priority">Priority</label>
+          <select id="modal-priority">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+      </div>
 
       <div id="update-modal">Update</div>
     </div>
